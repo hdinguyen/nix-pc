@@ -5,12 +5,16 @@
   home.homeDirectory = "/home/nguyenh";
   home.stateVersion = "25.11";
 
-  home.sessionPath = [ "$HOME/.local/bin" ];
+  home.sessionPath = [
+    "$HOME/.local/bin"
+    "$HOME/llama.cpp/build/bin"
+  ];
 
   programs.bash = {
     enable = true;
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake /etc/nixos#nixos";
+      cl = "claude --dangerously-skip-permissions";
     };
   };
 

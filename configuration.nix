@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, pkgs-unstable, ... }:
 
 {
   imports =
@@ -34,6 +34,16 @@
   #   keyMap = "us";
   #   useXkbConfig = true; # use xkb.options in tty.
   # };
+
+  i18n.inputMethod = {
+    enable = true;
+    type = "fcitx5";
+    fcitx5.addons = with pkgs; [
+      fcitx5-bamboo
+      fcitx5-gtk
+    ];
+    fcitx5.waylandFrontend = true;
+  };
 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
@@ -92,6 +102,7 @@
     WLR_NO_HARDWARE_CURSORS = "1";
     GBM_BACKEND = "nvidia-drm";
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    LD_LIBRARY_PATH = "/run/opengl-driver/lib";
   };
 
   services.displayManager.sddm = {
@@ -114,6 +125,10 @@
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
+  fonts.packages = with pkgs; [
+    font-awesome
+  ];
+
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
@@ -125,7 +140,20 @@
     networkmanagerapplet
     brave
     tmux
-    (llama-cpp.override {cudaSupport = true;})
+    python3Packages.huggingface-hub
+    uv
+    bun
+    pnpm
+    nwg-displays
+    adwaita-icon-theme
+    # llama.cpp build dependencies
+    cmake
+    ninja
+    pkg-config
+    cudaPackages.cuda_nvcc
+    cudaPackages.cuda_cudart
+    cudaPackages.cuda_cccl
+    cudaPackages.libcublas
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -141,8 +169,13 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
+  services.cloudflare-warp = {
+    enable = true;
+    package = pkgs-unstable.cloudflare-warp;
+  };
+
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 8080 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
