@@ -43,21 +43,18 @@
       fcitx5-bamboo
       fcitx5-gtk
     ];
-    fcitx5.waylandFrontend = true;
   };
 
   # Enable flatpak
   services.flatpak.enable = true;
   xdg.portal.enable = true;
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-hyprland pkgs.xdg-desktop-portal-gtk ];
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   xdg.portal.config.common.default = "*";
 
   # Enable the X11 windowing system.
-  # services.xserver.enable = true;
-
-  # Configure keymap in X11
-  # services.xserver.xkb.layout = "us";
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
+  services.xserver.enable = true;
+  services.xserver.xkb.layout = "us";
+  services.xserver.windowManager.i3.enable = true;
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -89,7 +86,12 @@
     powerManagement.enable = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   }; 
-  hardware.graphics.enable = true;
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      nvidia-vaapi-driver
+    ];
+  };
 
   boot.kernelParams = ["nvidia-drm.modeset=1"];
 
@@ -99,23 +101,20 @@
  
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
-
   environment.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
-    WLR_NO_HARDWARE_CURSORS = "1";
-    GBM_BACKEND = "nvidia-drm";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    LD_LIBRARY_PATH = "/run/opengl-driver/lib";
+    LD_LIBRARY_PATH = lib.mkForce (lib.concatStringsSep ":" [
+      "/run/opengl-driver/lib"
+      "${pkgs.cudaPackages.cuda_cudart}/lib"
+      "${pkgs.cudaPackages.libcublas}/lib"
+    ]);
   };
 
   services.displayManager.sddm = {
     enable = true;
-    wayland.enable = true;
+    wayland.enable = false;
   };
+
+  services.displayManager.defaultSession = "none+i3";
 
   programs.nix-ld = {
     enable = true;
@@ -125,6 +124,9 @@
       openssl
       curl
       glibc
+      cudaPackages.cuda_cudart
+      cudaPackages.libcublas
+      libGL
     ];
   };
 
@@ -134,6 +136,7 @@
   # You can use https://search.nixos.org/ to find more packages (and options).
   fonts.packages = with pkgs; [
     font-awesome
+    nerd-fonts.jetbrains-mono
   ];
 
   environment.systemPackages = with pkgs; [
@@ -143,7 +146,7 @@
     git
     kitty
     waybar
-    wofi
+    rofi
     networkmanagerapplet
     brave
     tmux
@@ -151,10 +154,11 @@
     uv
     bun
     pnpm
-    nwg-displays
+    arandr
     adwaita-icon-theme
     flameshot
-    grim
+    picom
+    feh
     # llama.cpp build dependencies
     cmake
     ninja
