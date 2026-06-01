@@ -5,7 +5,7 @@
     ./config/bash.nix
     ./config/tmux.nix
     ./config/kitty.nix
-    ./config/waybar.nix
+    ./config/polybar.nix
     ./config/i3.nix
   ];
 

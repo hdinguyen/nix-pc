@@ -5,7 +5,6 @@
     enable = true;
     settings = {
       mainBar = {
-        layer = "top";
         position = "top";
         height = 32;
         spacing = 4;

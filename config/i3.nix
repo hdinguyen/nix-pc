@@ -15,7 +15,7 @@ in
       terminal = terminal;
 
       startup = [
-        { command = "waybar"; notification = false; }
+        { command = "systemctl --user restart polybar"; notification = false; }
         { command = "fcitx5 -d"; notification = false; }
         { command = "picom -b"; notification = false; }
       ];
@@ -74,7 +74,7 @@ in
         "${modifier}+r" = "mode resize";
       };
 
-      bars = [];  # waybar handles the bar
+      bars = [];  # polybar handles the bar
 
       window.border = 2;
 
