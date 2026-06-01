@@ -36,6 +36,8 @@
       set -g pane-base-index 1
       set-option -g renumber-windows on
       set -ag terminal-overrides ",xterm-256color:RGB"
+      set -g extended-keys on
+      set -g extended-keys-format csi-u
     '';
   };
 }

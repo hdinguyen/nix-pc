@@ -15,10 +15,34 @@
         modules-right = [ "clock" "tray" ];
 
         "hyprland/workspaces" = {
-          format = "{id}";
+          format = "{id} {windows}";
+          format-window-separator = " ";
           on-click = "activate";
           sort-by-number = true;
           all-outputs = true;
+          window-rewrite-default = "󰘔";
+          window-rewrite = {
+            "class<firefox>"          = "󰈹";
+            "class<chromium>"         = "";
+            "class<google-chrome>"    = "";
+            "class<kitty>"            = "";
+            "class<foot>"             = "";
+            "class<Alacritty>"        = "";
+            "class<code>"             = "󰨞";
+            "class<code-url-handler>" = "󰨞";
+            "class<discord>"          = "󰙯";
+            "class<vesktop>"          = "󰙯";
+            "class<spotify>"          = "󰓇";
+            "class<steam>"            = "󰓓";
+            "class<thunar>"           = "󰉋";
+            "class<nautilus>"         = "󰉋";
+            "class<obsidian>"         = "󰠮";
+            "class<telegram-desktop>" = "󰈸";
+            "class<mpv>"              = "󰎁";
+            "class<vlc>"              = "󰕼";
+            "title<.*nvim.*>"         = "";
+            "title<.*vim.*>"          = "";
+          };
         };
 
         "hyprland/window" = {
