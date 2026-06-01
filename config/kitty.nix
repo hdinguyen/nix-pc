@@ -7,6 +7,7 @@
       enabled_layouts = "splits,stack";
       font_family = "Monaco";
       font_size = 13;
+      font_features = "Monaco -calt -liga -dlig";
     };
     keybindings = {
       "super+c" = "copy_to_clipboard";
