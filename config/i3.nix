@@ -18,6 +18,7 @@ in
         { command = "systemctl --user restart polybar"; notification = false; }
         { command = "fcitx5 -d"; notification = false; }
         { command = "picom -b"; notification = false; }
+        { command = "feh --bg-fill ~/wallpaper"; notification = false; }
       ];
 
       keybindings = {
@@ -97,6 +98,8 @@ in
     };
 
     extraConfig = ''
+      focus_follows_mouse no
+
       # HiDPI: set DPI to 144 (96 * 1.5 scale equivalent for 4K monitor)
       exec_always xrdb -merge <<< "Xft.dpi: 144"
       exec_always xrdb -merge <<< "Xcursor.theme: Adwaita"

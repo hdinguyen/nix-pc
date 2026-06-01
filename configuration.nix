@@ -137,6 +137,10 @@
   fonts.packages = with pkgs; [
     font-awesome
     nerd-fonts.jetbrains-mono
+    (pkgs.runCommand "monaco-font" {} ''
+      mkdir -p $out/share/fonts/truetype
+      cp ${./fonts/Monaco.ttf} $out/share/fonts/truetype/Monaco.ttf
+    '')
   ];
 
   environment.systemPackages = with pkgs; [
@@ -159,6 +163,7 @@
     flameshot
     picom
     feh
+    gthumb
     # llama.cpp build dependencies
     cmake
     ninja

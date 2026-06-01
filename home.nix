@@ -18,6 +18,19 @@
     "$HOME/llama.cpp/build/bin"
   ];
 
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "image/jpeg"    = "org.gnome.gThumb.desktop";
+      "image/png"     = "org.gnome.gThumb.desktop";
+      "image/gif"     = "org.gnome.gThumb.desktop";
+      "image/webp"    = "org.gnome.gThumb.desktop";
+      "image/tiff"    = "org.gnome.gThumb.desktop";
+      "image/bmp"     = "org.gnome.gThumb.desktop";
+      "image/svg+xml" = "org.gnome.gThumb.desktop";
+    };
+  };
+
   home.activation.bunNodeSymlink = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     ln -sf "${pkgs.bun}/bin/bun" "$HOME/.local/bin/node"
   '';

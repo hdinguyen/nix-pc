@@ -5,6 +5,8 @@
     enable = true;
     settings = {
       enabled_layouts = "splits,stack";
+      font_family = "Monaco";
+      font_size = 13;
     };
     keybindings = {
       "super+c" = "copy_to_clipboard";
