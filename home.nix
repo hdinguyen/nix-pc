@@ -7,6 +7,9 @@
     ./config/kitty.nix
     ./config/polybar.nix
     ./config/i3.nix
+    ./config/neovim.nix
+    ./config/vscode.nix
+    ./config/clipboard.nix
   ];
 
   home.username = "nguyenh";

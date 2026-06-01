@@ -70,6 +70,8 @@ in
         "XF86AudioPlay"        = "exec playerctl play-pause";
         "XF86AudioPrev"        = "exec playerctl previous";
 
+        "${modifier}+ctrl+c" = "exec CM_LAUNCHER=rofi clipmenu";
+
         "${modifier}+m" = "exit";
 
         "${modifier}+r" = "mode resize";

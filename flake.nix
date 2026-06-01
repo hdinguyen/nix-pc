@@ -25,6 +25,7 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.backupFileExtension = "bak";
+          home-manager.extraSpecialArgs = { inherit pkgs-unstable; };
           home-manager.users.nguyenh = import ./home.nix;
         }
       ];
