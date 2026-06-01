@@ -6,6 +6,7 @@
     ./config/tmux.nix
     ./config/kitty.nix
     ./config/waybar.nix
+    ./config/hyprland.nix
   ];
 
   home.username = "nguyenh";

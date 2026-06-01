@@ -4,6 +4,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./config/synergy.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -44,6 +45,12 @@
     ];
     fcitx5.waylandFrontend = true;
   };
+
+  # Enable flatpak
+  services.flatpak.enable = true;
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-hyprland pkgs.xdg-desktop-portal-gtk ];
+  xdg.portal.config.common.default = "*";
 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
@@ -146,6 +153,8 @@
     pnpm
     nwg-displays
     adwaita-icon-theme
+    flameshot
+    grim
     # llama.cpp build dependencies
     cmake
     ninja
