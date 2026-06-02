@@ -20,10 +20,15 @@ in
       # Language servers
       lua-language-server
       nil
+      pyright
 
       # Formatters
       stylua
       nixfmt-classic
+
+      # Python linting
+      pylint
+      python3
 
       # Tools
       ripgrep
@@ -56,6 +61,42 @@ in
   home.file.".config/nvim/stylua.toml".source = "${lazyvim-starter}/stylua.toml";
   home.file.".config/nvim/LICENSE".source = "${lazyvim-starter}/LICENSE";
   home.file.".config/nvim/README.md".source = "${lazyvim-starter}/README.md";
+
+  home.file.".config/nvim/lua/plugins/python.lua".text = ''
+    return {
+      -- Enable LazyVim Python extra (pyright LSP + treesitter)
+      { import = "lazyvim.plugins.extras.lang.python" },
+
+      -- Override pyright to auto-detect uv's .venv
+      {
+        "neovim/nvim-lspconfig",
+        opts = {
+          servers = {
+            pyright = {
+              on_new_config = function(config, root_dir)
+                local venv_python = root_dir .. "/.venv/bin/python"
+                if vim.fn.executable(venv_python) == 1 then
+                  config.settings = config.settings or {}
+                  config.settings.python = config.settings.python or {}
+                  config.settings.python.pythonPath = venv_python
+                end
+              end,
+            },
+          },
+        },
+      },
+
+      -- Configure pylint via nvim-lint
+      {
+        "mfussenegger/nvim-lint",
+        opts = {
+          linters_by_ft = {
+            python = { "pylint" },
+          },
+        },
+      },
+    }
+  '';
 
   home.file.".config/nvim/lua/plugins/claudecode.lua".text = ''
     return {

@@ -8,6 +8,7 @@
       font_family = "Monaco";
       font_size = 13;
       font_features = "Monaco -calt -liga -dlig";
+      enable_audio_bell = false;
     };
     keybindings = {
       "super+c" = "copy_to_clipboard";

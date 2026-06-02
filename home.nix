@@ -21,6 +21,11 @@
     "$HOME/llama.cpp/build/bin"
   ];
 
+  home.sessionVariables = {
+    # Zed requires Vulkan; allow software-emulated GPU (llvmpipe) to avoid startup failure
+    ZED_ALLOW_EMULATED_GPU = "1";
+  };
+
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {

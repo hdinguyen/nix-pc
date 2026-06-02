@@ -107,6 +107,7 @@
       "${pkgs.cudaPackages.cuda_cudart}/lib"
       "${pkgs.cudaPackages.libcublas}/lib"
     ]);
+    HF_HUB_CACHE = "$HOME/models";
   };
 
   services.displayManager.sddm = {
@@ -127,6 +128,7 @@
       cudaPackages.cuda_cudart
       cudaPackages.libcublas
       libGL
+      alsa-lib
     ];
   };
 
@@ -143,7 +145,13 @@
     '')
   ];
 
+  services.udev.packages = [ pkgs.usb-modeswitch-data ];
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0bda", ATTR{idProduct}=="1a2b", RUN+="${pkgs.usb-modeswitch}/bin/usb_modeswitch -K -v 0bda -p 1a2b"
+  '';
+
   environment.systemPackages = with pkgs; [
+    usb-modeswitch
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     curl
@@ -156,6 +164,7 @@
     tmux
     python3Packages.huggingface-hub
     uv
+    jq
     bun
     pnpm
     arandr
@@ -172,7 +181,34 @@
     cudaPackages.cuda_cudart
     cudaPackages.cuda_cccl
     cudaPackages.libcublas
+    blueman
   ];
+
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings = {
+      Policy.AutoEnable = true;
+    };
+  };
+  services.blueman.enable = true;
+
+  systemd.services.bluetooth-usb-reset = {
+    description = "Reset USB Bluetooth adapter at boot";
+    after = [ "bluetooth.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = pkgs.writeShellScript "bt-usb-reset" ''
+        for dev in /sys/bus/usb/devices/*; do
+          if [ -f "$dev/idVendor" ] && [ "$(cat $dev/idVendor 2>/dev/null)" = "0bda" ]; then
+            echo 0 > "$dev/authorized" && sleep 1 && echo 1 > "$dev/authorized"
+          fi
+        done
+      '';
+      RemainAfterExit = true;
+    };
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -19,6 +19,7 @@ in
         { command = "fcitx5 -d"; notification = false; }
         { command = "picom -b"; notification = false; }
         { command = "feh --bg-fill ~/wallpaper"; notification = false; }
+        { command = "xset s off -dpms"; notification = false; }
       ];
 
       keybindings = {
@@ -26,6 +27,7 @@ in
         "${modifier}+q"       = "kill";
         "${modifier}+space"   = "exec ${menu}";
         "${modifier}+f"       = "floating toggle";
+        "Mod1+f"              = "fullscreen toggle";
         "${modifier}+p"       = "layout toggle split";
         "${modifier}+j"       = "layout toggle split";
 
